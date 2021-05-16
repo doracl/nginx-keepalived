@@ -1,0 +1,29 @@
+version: "3"
+services:
+  nginx_master:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    restart: always
+    volumes:
+      - ./index-master.html:/usr/share/nginx/html/index.html
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+    cap_add: 
+      - NET_ADMIN
+      - NET_BROADCAST
+      - NET_RAW
+    network_mode: "host"
+  nginx_slave:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    restart: always
+    volumes:
+      - ./keepalived-slave.conf:/etc/keepalived/keepalived.conf
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+    cap_add: 
+      - NET_ADMIN
+      - NET_BROADCAST
+      - NET_RAW
+    network_mode: "host"
+  
